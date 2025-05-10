@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Beep Timer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 20px;
+    }
+    #elapsed {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>⏰ 90-Minute Timer</h1>
+  <button onclick="startTimer()">Start Timer</button>
+  <div id="elapsed">Elapsed Time: 0 min 0 sec</div>
+
+  <!-- Audio source -->
+  <audio id="beep" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+
+  <script>
+    let startTime;
+    let timerInterval;
+    let beepTimeouts = [];
+
+    function startTimer() {
+      startTime = Date.now();
+      clearInterval(timerInterval);
+      beepTimeouts.forEach(clearTimeout);
+      beepTimeouts = [];
+
+      // Update elapsed time
+      timerInterval = setInterval(() => {
+        const now = Date.now();
+        const elapsed = Math.floor((now - startTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        document.getElementById("elapsed").innerText =
+          `Elapsed Time: ${minutes} min ${seconds} sec`;
+
+        if (elapsed >= 90 * 60) {
+          clearInterval(timerInterval);
+          alert("⏰ Time's up!");
+        }
+      }, 1000);
+
+      // Schedule random beeps every 3–5 minutes
+      let next = 0;
+      while (next < 90 * 60) {
+        const delay = Math.floor(Math.random() * (5 - 3 + 1) + 3); // 3~5 minutes
+        next += delay * 60;
+        if (next < 90 * 60) {
+          const timeout = setTimeout(() => {
+            const beep = document.getElementById("beep");
+            beep.play();
+          }, next * 1000);
+          beepTimeouts.push(timeout);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
