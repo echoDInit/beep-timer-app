@@ -1,1 +1,28 @@
+# 忽略 node_modules 依赖
 node_modules/
+
+# 忽略日志文件
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 忽略环境配置文件
+.env
+.env.local
+.env.*.local
+
+# macOS 系统文件
+.DS_Store
+
+# 忽略打包输出（如有）
+dist/
+build/
+
+# 忽略 IDE 文件
+.vscode/
+.idea/
+
+# 忽略 lock 文件（如果你只用 yarn 或 pnpm）
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
